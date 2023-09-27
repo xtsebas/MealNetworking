@@ -10,5 +10,5 @@ import retrofit2.http.Query
 
 sealed interface MealsApi{
     @GET("lookup.php")
-    fun getMealById(@Query("i") id: String): Call<MealResponse>
+    fun getMeals(@Query("i") id: String): Call<MealResponse>
 }

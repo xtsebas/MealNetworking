@@ -7,5 +7,5 @@ import retrofit2.http.Query
 
 sealed interface DetailsApi{
     @GET("filter.php")
-    fun getMealsByCategory(@Query("c") category: String): Call<DetailResponse>
+    fun getDetails(@Query("c") category: String): Call<DetailResponse>
 }
