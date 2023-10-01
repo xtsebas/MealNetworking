@@ -1,10 +1,11 @@
 package com.example.networking.networking.response
 
-data class CategoryResponse(val categories: List<CategoryItem>)
+import com.google.gson.annotations.SerializedName
+
+data class CategoryResponse(@SerializedName("meals") val categories: List<CategoryItem>)
 
 data class CategoryItem(
-    val idCategory: String,
-    val strCategory: String,
-    val strCategoryThumb: String,
-    val strCategoryDescription: String
+    @SerializedName("strMeal") val name: String,
+    @SerializedName("strMealThumb") val mealthumb: String,
+    @SerializedName("idMeal") val idmeal: String
 )
