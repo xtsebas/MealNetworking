@@ -1,54 +1,34 @@
 package com.example.networking.UIview.Mealdetail.View
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.example.networking.networking.response.CategoryItem
-import com.example.networking.networking.response.DetailItem
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun MealDetail(details: MutableState<List<DetailItem>?>) {
-    MaterialTheme {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-                .verticalScroll(rememberScrollState())
-        ) {
-            details.value?.forEach { detail ->
-                DetailCard(detail)
-                Spacer(modifier = Modifier.height(16.dp))
-            }
-        }
+fun Mealdetail(mealId: String) {
+
+    val viewModel: MealDetailViewModel = viewModel()
+
+    LaunchedEffect(mealId) {
+        viewModel.getMealDetail(mealId)
     }
-}
+
+    val mealDetail by viewModel.mealDetail.collectAsState(null)
+
+    val currentMealId by rememberUpdatedState(mealId)
 
 
-@Composable
-fun DetailCard(detail: DetailItem) {
-    Card {
-        Column(
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth()
-        ) {
-            Text(text = "ID: ${detail.idMeal}")
-            Text(text = "Nombre: ${detail.strCategory}")
-            Text(text = "Descripción: ${detail.strMeal}")
-            Text(text = "No se que es: ${detail.strMealThumb}")
-            Spacer(modifier = Modifier.height(8.dp))
+    Column {
+        if (mealDetail != null) {
+            Text(text = mealDetail!!.details?.first()?.strMeal ?: "Cargando...")
+            Text(text = mealDetail!!.details?.first()?.strInstructions ?: "No instructions available")
+        } else {
+            Text("Cargando detalles de la comida...")
         }
     }
 }
